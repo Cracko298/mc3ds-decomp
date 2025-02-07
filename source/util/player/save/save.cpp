@@ -1,6 +1,15 @@
-#include <ninsdk/3ds/utils/keypad.h> // I have no idea, is_pressed is defined here, no time to look into further
 #include "include/save.hpp"
 #include "../../include/keycodes.h"
+
+bool checkKeyIsHeld(){
+    uintptr_t targetAddress = ADDRESS_BASE + ADDRESS_0; // address is first updated. any address_x can be used however.
+    int* ptr = reinterpret_cast<int*>(targetAddress);
+    if (ptr != nullptr && *ptr != 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 class Process {
 public:
@@ -43,13 +52,14 @@ void saveFunction() {
     Process::InitializeMemory();
     offset = 0x00000000;
     data8 = 0x00;
+    kDown = checkKeyIsHeld();
     Process::WRITEU8(offset + 0x1E81000, 0x00);
     Process::WRITEU8(offset + 0x1E81001, 0x00);
-    if (is_pressed(KEY_ZR))
+    if (KEY_ZR && kDown)
     {
         Process::WRITEU8(offset + 0x1E81000, 0x01);
     }
-    if (is_pressed(KEY_ZL))
+    if (KEY_ZL && kDown)
     {
         Process::WRITEU8(offset + 0x1E81001, 0x01);
     }
