@@ -1,5 +1,6 @@
 #include <ninsdk/3ds/utils/keypad.h> // I have no idea, is_pressed is defined here, no time to look into further
 #include "include/save.hpp"
+#include "../../include/keycodes.h"
 
 class Process {
 public:
@@ -44,11 +45,11 @@ void saveFunction() {
     data8 = 0x00;
     Process::WRITEU8(offset + 0x1E81000, 0x00);
     Process::WRITEU8(offset + 0x1E81001, 0x00);
-    if (is_pressed(0x00008000))
+    if (is_pressed(KEY_ZR))
     {
         Process::WRITEU8(offset + 0x1E81000, 0x01);
     }
-    if (is_pressed(0x00004000))
+    if (is_pressed(KEY_ZL))
     {
         Process::WRITEU8(offset + 0x1E81001, 0x01);
     }
